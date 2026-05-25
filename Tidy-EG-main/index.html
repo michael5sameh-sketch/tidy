@@ -1,0 +1,1915 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tidy EG - مطحنة قهوة يدوية بقلب سيراميك وطحن دقيق مع شحن مجاني لكل محافظات مصر.">
+  <title>Tidy EG | مطحنة القهوة اليدوية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ===== TOKENS ===== */
+    :root {
+      --black: #0a0a0a;
+      --black-deep: #050505;
+      --black-soft: #111111;
+      --gold: #c9a84c;
+      --gold-light: #e4ca77;
+      --white: #ffffff;
+      --gray: #999999;
+      --gray-soft: #d7d7d7;
+      --line: rgba(201,168,76,0.24);
+      --glass: rgba(255,255,255,0.045);
+      --shadow: 0 24px 80px rgba(0,0,0,0.55);
+      --content: min(1120px, calc(100% - 40px));
+    }
+
+    /* ===== RESET ===== */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+    }
+
+    body {
+      margin: 0;
+      direction: rtl;
+      font-family: "Tajawal", system-ui, sans-serif;
+      color: var(--white);
+      background: var(--black);
+      overflow-x: hidden;
+      line-height: 1.75;
+    }
+
+    h1, h2, h3 {
+      font-family: "Tajawal", sans-serif;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    /* ===== LAYOUT ===== */
+    .section {
+      position: relative;
+      isolation: isolate;
+    }
+
+    .container {
+      width: var(--content);
+      margin-inline: auto;
+    }
+
+    /* ===== SHARED UI ===== */
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.06em;
+    }
+
+    /* gold-line: hidden by default, animates when parent gets .visible */
+    .gold-line {
+      display: block;
+      width: 0;
+      height: 1px;
+      margin: 0 auto 28px;
+      background: var(--gold);
+      opacity: 0;
+      transition: width 0.8s ease, opacity 0.8s ease;
+    }
+
+    /* hero gold-line fires immediately on load */
+    .hero .gold-line,
+    .section.visible .gold-line {
+      width: 46px;
+      opacity: 0.9;
+    }
+
+    /* ===== CTA BUTTONS ===== */
+    .cta-btn,
+    .submit-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 52px;
+      border: 1px solid var(--gold);
+      border-radius: 4px;
+      background: var(--gold);
+      color: #050505;
+      font-weight: 800;
+      padding: 14px 32px;
+      box-shadow: 0 14px 34px rgba(201,168,76,0.22);
+      transition: transform 180ms ease, background 180ms ease, box-shadow 180ms ease;
+    }
+
+    .cta-btn:hover,
+    .submit-btn:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 42px rgba(201,168,76,0.3);
+    }
+
+    .cta-btn:focus-visible,
+    .submit-btn:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 3px;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height: 100svh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .hero__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      z-index: -3;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(180deg,
+          rgba(0,0,0,0.45) 0%,
+          rgba(0,0,0,0.15) 40%,
+          rgba(0,0,0,0.60) 75%,
+          rgba(0,0,0,0.90) 100%),
+        radial-gradient(circle at 50% 42%, rgba(201,168,76,0.10), transparent 40%);
+    }
+
+    .brand-mark {
+      position: absolute;
+      top: max(24px, env(safe-area-inset-top));
+      left: 50%;
+      transform: translateX(-50%);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gold);
+      font-size: 1rem;
+      font-family: "Playfair Display", serif;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      white-space: nowrap;
+      /* animation */
+      opacity: 0;
+      animation: fadeIn 1.2s ease 0.1s forwards;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.7;
+    }
+
+    .hero__content {
+      width: min(720px, calc(100% - 36px));
+      margin-inline: auto;
+      padding: 110px 0 90px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      margin: 0;
+      color: var(--white);
+      font-size: clamp(2.2rem, 9vw, 6rem);
+      line-height: 1.18;
+      font-weight: 700;
+      text-shadow: 0 18px 60px rgba(0,0,0,0.75);
+      opacity: 0;
+      animation: fadeUp 1s ease 0.35s forwards;
+    }
+
+    .hero p {
+      margin: 18px auto 0;
+      max-width: 620px;
+      color: rgba(255,255,255,0.78);
+      font-size: clamp(1rem, 3.8vw, 1.35rem);
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 1s ease 0.65s forwards;
+    }
+
+    .scroll-arrow {
+      position: absolute;
+      right: 50%;
+      bottom: 28px;
+      transform: translateX(50%);
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255,255,255,0.32);
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      background: rgba(0,0,0,0.22);
+      backdrop-filter: blur(12px);
+      opacity: 0;
+      animation: bounce 2.2s ease-in-out infinite, fadeIn 1s ease 1.1s forwards;
+    }
+
+    /* ===== ATMOSPHERE ===== */
+    .atmosphere {
+      min-height: 100svh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+      padding: 80px 0;
+      background: #000;
+    }
+
+    .atmosphere__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: -3;
+      will-change: transform;
+    }
+
+    .atmosphere::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(180deg, rgba(0,0,0,0.06), rgba(0,0,0,0.70) 68%, #0a0a0a 100%);
+    }
+
+    .atmosphere__content {
+      text-align: center;
+    }
+
+    .atmosphere h2 {
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 4.4rem);
+      line-height: 1.2;
+      font-weight: 700;
+      text-shadow: 0 16px 50px rgba(0,0,0,0.75);
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 1s ease 0.1s, transform 1s ease 0.1s;
+    }
+
+    .atmosphere.visible h2 {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== FEATURES ===== */
+    .features {
+      padding: 80px 0;
+      background: linear-gradient(180deg, #0a0a0a, #070707 54%, #0a0a0a);
+    }
+
+    .features__grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .feature-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--glass);
+      padding: 24px 20px;
+      min-height: 210px;
+      display: grid;
+      gap: 15px;
+      align-content: start;
+      overflow: hidden;
+      box-shadow: 0 20px 70px rgba(0,0,0,0.25);
+      /* hover */
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(201,168,76,0.5);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 30px rgba(201,168,76,0.08);
+    }
+
+    .feature-card--image {
+      min-height: 250px;
+      padding: 0;
+      background: #090909;
+    }
+
+    .feature-card--image img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      opacity: 0.86;
+    }
+
+    .feature-card--image .feature-card__body {
+      padding: 0 20px 24px;
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(201,168,76,0.36);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+    }
+
+    .feature-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .feature-card h3 {
+      margin: 0;
+      font-size: 1.22rem;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    .feature-card p {
+      margin: 8px 0 0;
+      color: var(--gray);
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+
+    /* ===== DETAILS ===== */
+    .details {
+      min-height: 78svh;
+      display: grid;
+      align-items: center;
+      padding: 96px 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .details__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+    }
+
+    /* stronger overlay so text is always readable */
+    .details::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(
+        90deg,
+        rgba(0,0,0,0.10) 0%,
+        rgba(0,0,0,0.72) 50%,
+        rgba(0,0,0,0.94) 100%
+      );
+    }
+
+    .details__panel {
+      width: min(680px, 100%);
+      margin-inline-start: auto;
+      padding: 34px 0;
+      /* animation: slides in from right (RTL = start is right side) */
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .details.visible .details__panel {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .details h2 {
+      margin: 0;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    /* ===== SPEC GRID ===== */
+    .spec-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      margin: 36px 0 0;
+      padding: 0;
+      border: 1px solid rgba(201,168,76,0.32);
+      border-radius: 4px;
+      overflow: hidden;
+      background: rgba(201,168,76,0.32);
+    }
+
+    .spec-list li {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 28px 22px;
+      background: rgba(5,5,5,0.85);
+      color: var(--white);
+      font-size: 0.97rem;
+      font-weight: 300;
+      line-height: 1.55;
+      /* hover */
+      transition: background 0.3s ease;
+      /* scroll animation */
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .spec-list li:hover {
+      background: rgba(201,168,76,0.08);
+    }
+
+    .details.visible .spec-list li {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+    }
+
+    .details.visible .spec-list li:nth-child(1) { transition-delay: 0.10s; }
+    .details.visible .spec-list li:nth-child(2) { transition-delay: 0.20s; }
+    .details.visible .spec-list li:nth-child(3) { transition-delay: 0.30s; }
+    .details.visible .spec-list li:nth-child(4) { transition-delay: 0.40s; }
+
+    .spec-list li strong {
+      display: block;
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .spec-list li span {
+      color: rgba(255,255,255,0.82);
+      font-size: 0.97rem;
+    }
+
+    /* ===== PRICE ===== */
+    .price {
+      padding: 90px 0;
+      text-align: center;
+      background: #060606;
+      overflow: hidden;
+    }
+
+    .price::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(180deg, rgba(10,10,10,0.88), rgba(10,10,10,0.98)),
+        url("s11.png") center / cover no-repeat;
+      opacity: 0.55;
+    }
+
+    /* price children animate individually */
+    .price .eyebrow,
+    .price .gold-line,
+    .price .old-price,
+    .price .new-price,
+    .price .badge,
+    .price .shipping-note,
+    .price .cta-btn {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .price.visible .eyebrow        { opacity: 1; transform: translateY(0); transition-delay: 0.00s; }
+    .price.visible .gold-line      { opacity: 0.9; width: 46px; transform: translateY(0); transition-delay: 0.10s; }
+    .price.visible .old-price      { opacity: 1; transform: translateY(0); transition-delay: 0.20s; }
+    .price.visible .new-price      { opacity: 1; transform: translateY(0); transition-delay: 0.36s; }
+    .price.visible .badge          { opacity: 1; transform: translateY(0); transition-delay: 0.52s; }
+    .price.visible .shipping-note  { opacity: 1; transform: translateY(0); transition-delay: 0.64s; }
+    .price.visible .cta-btn        { opacity: 1; transform: translateY(0); transition-delay: 0.78s; animation: goldPulse 3s ease-in-out infinite 0.8s; }
+
+    .old-price {
+      margin: 0;
+      color: #707070;
+      font-size: clamp(1.2rem, 5vw, 1.65rem);
+      font-weight: 300;
+      text-decoration: line-through;
+    }
+
+    .new-price {
+      margin: 6px 0 12px;
+      color: var(--gold);
+      font-size: clamp(4rem, 18vw, 8.6rem);
+      line-height: 1.05;
+      font-weight: 700;
+      text-shadow: 0 0 40px rgba(201,168,76,0.32);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      border: 1px solid rgba(201,168,76,0.36);
+      border-radius: 4px;
+      background: rgba(201,168,76,0.1);
+      color: var(--gold-light);
+      padding: 6px 18px;
+      font-size: 0.92rem;
+    }
+
+    .shipping-note {
+      margin: 20px auto 0;
+      max-width: 420px;
+      color: rgba(255,255,255,0.62);
+      font-size: 0.98rem;
+      font-weight: 300;
+    }
+
+    .price .cta-btn { margin-top: 28px; }
+
+    /* ===== ORDER ===== */
+    .order {
+      padding: 74px 0;
+      border-top: 1px solid var(--line);
+      background: #080808;
+      overflow: hidden;
+    }
+
+    .order::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.84)),
+        url("p2.png") center / cover no-repeat;
+      opacity: 0.92;
+    }
+
+    .order__intro {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .order h2 {
+      margin: 0;
+      font-size: clamp(1.85rem, 7vw, 3.8rem);
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .order__intro p {
+      margin: 12px auto 0;
+      max-width: 650px;
+      color: var(--gray);
+      font-size: 0.98rem;
+      font-weight: 300;
+    }
+
+    .order__layout {
+      display: grid;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* ===== PRODUCT SHOT (beside form) ===== */
+    .product-shot {
+      display: none;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0a0a0a;
+      border: 1px solid rgba(201,168,76,0.22);
+      box-shadow: var(--shadow);
+    }
+
+    .product-shot img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* ===== ORDER FORM ===== */
+    .order-form {
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 10px;
+      background: rgba(0,0,0,0.52);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      padding: 22px;
+      /* scroll animation */
+      opacity: 0;
+      transform: scale(0.97) translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .order.visible .order-form {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+    }
+
+    label {
+      color: #cecece;
+      font-size: 0.88rem;
+      font-weight: 400;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      padding: 13px 14px;
+      min-height: 50px;
+      direction: rtl;
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    select { color-scheme: dark; }
+
+    textarea {
+      min-height: 112px;
+      resize: vertical;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.08);
+      outline: none;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: rgba(255,255,255,0.38);
+    }
+
+    .form-error {
+      display: none;
+      margin: 14px 0 0;
+      border: 1px solid rgba(255,93,93,0.42);
+      border-radius: 8px;
+      background: rgba(255,93,93,0.1);
+      color: #ffd4d4;
+      padding: 12px 14px;
+      font-size: 0.92rem;
+    }
+
+    .promo-feedback {
+      display: none;
+      margin-top: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .promo-feedback.success {
+      display: block;
+      color: var(--gold);
+    }
+
+    .promo-feedback.error {
+      display: block;
+      color: #ff8a8a;
+    }
+
+    /* ===== FORM PRICE CARD (inside order form) ===== */
+    .form-price {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(201,168,76,0.06);
+      padding: 18px 16px;
+      margin-bottom: 20px;
+      text-align: center;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .form-price.promo-active-bg {
+      background: rgba(201,168,76,0.10);
+      border-color: rgba(201,168,76,0.40);
+    }
+
+    .form-price__row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .form-price__original {
+      color: #707070;
+      font-size: 1.05rem;
+      font-weight: 300;
+      text-decoration: line-through;
+    }
+
+    .form-price__current {
+      color: var(--gold);
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.15;
+      transition: color 0.3s ease;
+    }
+
+    .form-price__current.promo-active {
+      color: var(--gold-light);
+    }
+
+    .form-price__saving {
+      margin-top: 6px;
+      color: var(--gold-light);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .form-price__promo-note {
+      margin-top: 8px;
+      color: var(--gold);
+      font-size: 0.84rem;
+      font-weight: 500;
+    }
+
+    .form-price__promo-note:empty {
+      display: none;
+    }
+
+    @media (max-width: 539px) {
+      .form-price__current {
+        font-size: 1.8rem;
+      }
+    }
+
+    .success-message {
+      display: none;
+      margin-top: 16px;
+      border: 1px solid rgba(201,168,76,0.42);
+      border-radius: 8px;
+      background: rgba(201,168,76,0.12);
+      color: #fff4cf;
+      padding: 16px;
+      font-size: 0.96rem;
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    /* ===== CLOSING ===== */
+    .closing {
+      min-height: 65svh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      text-align: center;
+      padding: 70px 0;
+      background: #000;
+    }
+
+    .closing__image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: -3;
+      will-change: transform;
+    }
+
+    .closing::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(180deg, rgba(0,0,0,0.34), rgba(0,0,0,0.78));
+    }
+
+    .closing h2 {
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 4.4rem);
+      line-height: 1.2;
+      font-weight: 700;
+      text-shadow: 0 16px 50px rgba(0,0,0,0.75);
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s ease 0.2s, transform 0.9s ease 0.2s;
+    }
+
+    .closing .cta-btn {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s;
+    }
+
+    .closing.visible h2      { opacity: 1; transform: translateY(0); }
+    .closing.visible .cta-btn { opacity: 1; transform: translateY(0); animation: goldPulse 3s ease-in-out infinite 0.6s; }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 40px 0;
+      text-align: center;
+      border-top: 1px solid rgba(201,168,76,0.18);
+      background: var(--black-deep);
+    }
+
+    .footer__brand {
+      margin: 0;
+      color: var(--gold);
+      font-size: 1.05rem;
+      font-family: "Playfair Display", serif;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+    }
+
+    .footer p {
+      margin: 8px 0 0;
+      color: #555;
+      font-size: 0.85rem;
+      font-weight: 300;
+    }
+
+    /* ===== PROMO POPUP ===== */
+    .promo-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.78);
+      backdrop-filter: blur(8px);
+      animation: fadeIn 0.35s ease forwards;
+      padding: 20px;
+    }
+
+    .promo-overlay[hidden] {
+      display: none;
+    }
+
+    .promo-modal {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--black-soft);
+      box-shadow: var(--shadow), 0 0 60px rgba(201,168,76,0.12);
+      overflow: hidden;
+      animation: modalSlideUp 0.4s ease forwards;
+    }
+
+    .promo-close {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 10;
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+      color: var(--gold);
+      padding: 0;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .promo-close:hover {
+      background: var(--gold);
+      color: #050505;
+      transform: scale(1.08);
+    }
+
+    .promo-close:focus-visible {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 3px;
+    }
+
+    .promo-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .promo-body {
+      padding: 22px 20px 28px;
+      text-align: center;
+    }
+
+    .promo-title {
+      margin: 0 0 8px;
+      color: var(--gold);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .promo-text {
+      margin: 0;
+      color: rgba(255,255,255,0.72);
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    @keyframes modalSlideUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0) scale(1);    }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .promo-overlay,
+      .promo-modal {
+        animation: none;
+      }
+    }
+
+    /* ===== SECTION FADE-IN (generic) ===== */
+    .fade-section {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .fade-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== CUSTOM DROPDOWN ===== */
+    .custom-dropdown {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-dropdown__toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(255,255,255,0.11);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      padding: 13px 14px;
+      min-height: 50px;
+      direction: rtl;
+      transition: border-color 160ms ease, background 160ms ease;
+      font: inherit;
+      cursor: pointer;
+      text-align: right;
+    }
+
+    .custom-dropdown__toggle:hover {
+      border-color: rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .custom-dropdown__toggle:focus-visible {
+      outline: 2px solid var(--gold-light);
+      outline-offset: 3px;
+    }
+
+    .custom-dropdown.open .custom-dropdown__toggle {
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .custom-dropdown__placeholder {
+      color: rgba(255,255,255,0.38);
+      flex: 1;
+    }
+
+    .custom-dropdown__toggle[data-selected] .custom-dropdown__placeholder {
+      color: var(--white);
+    }
+
+    .custom-dropdown__chevron {
+      flex-shrink: 0;
+      transition: transform 200ms ease;
+      color: var(--gray);
+    }
+
+    .custom-dropdown.open .custom-dropdown__chevron {
+      transform: rotate(180deg);
+      color: var(--gold);
+    }
+
+    .custom-dropdown__panel {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      left: 0;
+      z-index: 200;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 6px;
+      background: rgba(10,10,10,0.97);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      overflow: hidden;
+      animation: dropdownFadeIn 200ms ease forwards;
+    }
+
+    .custom-dropdown__search-wrap {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+
+    .custom-dropdown__search {
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      color: var(--white);
+      padding: 10px 12px;
+      min-height: 42px;
+      direction: rtl;
+      font: inherit;
+      transition: border-color 160ms ease, background 160ms ease;
+    }
+
+    .custom-dropdown__search:focus {
+      border-color: var(--gold);
+      background: rgba(255,255,255,0.08);
+      outline: none;
+    }
+
+    .custom-dropdown__search::placeholder { color: rgba(255,255,255,0.32); }
+
+    .custom-dropdown__list {
+      list-style: none;
+      margin: 0;
+      padding: 6px 0;
+      max-height: 220px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(201,168,76,0.3) transparent;
+    }
+
+    .custom-dropdown__list::-webkit-scrollbar { width: 6px; }
+    .custom-dropdown__list::-webkit-scrollbar-track { background: transparent; }
+    .custom-dropdown__list::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 3px; }
+
+    .custom-dropdown__option {
+      padding: 11px 16px;
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 120ms ease, color 120ms ease;
+      direction: rtl;
+      text-align: right;
+    }
+
+    .custom-dropdown__option:hover,
+    .custom-dropdown__option[data-active] {
+      background: rgba(201,168,76,0.12);
+      color: var(--gold-light);
+    }
+
+    .custom-dropdown__option[data-selected] {
+      background: rgba(201,168,76,0.18);
+      color: var(--gold);
+      font-weight: 500;
+    }
+
+    .custom-dropdown__option[hidden] { display: none; }
+
+    .custom-dropdown__no-results {
+      padding: 16px;
+      text-align: center;
+      color: rgba(255,255,255,0.38);
+      font-size: 0.9rem;
+    }
+
+    /* ===== KEYFRAMES ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(36px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(50%) translateY(0);    }
+      50%       { transform: translateX(50%) translateY(-10px); }
+    }
+
+    @keyframes goldPulse {
+      0%, 100% { box-shadow: 0 14px 34px rgba(201,168,76,0.22); }
+      50%       { box-shadow: 0 14px 50px rgba(201,168,76,0.50); }
+    }
+
+    @keyframes dropdownFadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 539px) {
+      .spec-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 680px) {
+      :root { --content: min(1120px, calc(100% - 64px)); }
+
+      .features__grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .feature-card { min-height: 282px; }
+
+      .order-form { padding: 30px; }
+
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .field--wide { grid-column: 1 / -1; }
+    }
+
+    /* tablet: show product shot above form */
+    @media (max-width: 919px) {
+      .product-shot {
+        display: block;
+        max-width: 260px;
+        margin: 0 auto 28px;
+      }
+
+      .product-shot img {
+        max-height: 340px;
+        object-fit: contain;
+        object-position: center;
+      }
+    }
+
+    /* desktop: product shot beside form */
+    @media (min-width: 920px) {
+      .hero__content { padding-top: 132px; }
+
+      .product-shot {
+        display: block;
+        /* Match the natural portrait ratio of buy-photo.png (768x1376 ≈ 9:16) */
+        aspect-ratio: 768 / 1376;
+        overflow: hidden;
+      }
+
+      .product-shot img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+      }
+
+      .order__layout {
+        grid-template-columns: minmax(240px, 0.65fr) minmax(0, 1fr);
+        gap: 36px;
+        align-items: start;
+      }
+
+      .details__panel {
+        margin-inline-start: 0;
+        margin-inline-end: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .fade-section,
+      .hero h1, .hero p, .brand-mark,
+      .atmosphere h2,
+      .details .details__panel,
+      .spec-list li,
+      .price .eyebrow, .price .gold-line, .price .old-price,
+      .price .new-price, .price .badge, .price .shipping-note, .price .cta-btn,
+      .order-form,
+      .closing h2, .closing .cta-btn {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .gold-line { width: 46px !important; opacity: 0.9 !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- PROMO POPUP -->
+  <div class="promo-overlay" id="promo-overlay" role="dialog" aria-modal="true" aria-label="عرض خاص" tabindex="-1" hidden>
+    <div class="promo-modal">
+      <button class="promo-close" id="promo-close" type="button" aria-label="إغلاق">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+      <img class="promo-image" src="pop.jpeg" alt="عرض خاص" width="420" height="420" loading="eager">
+      <div class="promo-body">
+        <p class="promo-title">عرض خاص 🌟</p>
+        <p class="promo-text">لفترة محدودة! اطلب دلوقتي واستمتع بخصم مميز على أول طلب ليك.</p>
+      </div>
+    </div>
+  </div>
+  <main>
+
+    <!-- HERO -->
+    <section class="section hero" aria-label="Tidy EG مطحنة القهوة اليدوية">
+      <img class="hero__image" src="ss.png" alt="مطحنة قهوة يدوية Tidy EG بإضاءة فاخرة" width="1080" height="1920" fetchpriority="high">
+      <div class="brand-mark" aria-label="Tidy EG">Tidy EG</div>
+      <div class="hero__content">
+        <h1>قهوتك تستاهل أحسن</h1>
+        <p>مطحنة يدوية بقلب سيراميك، طحن دقيق في كل مرة</p>
+      </div>
+      <a class="scroll-arrow" href="#atmosphere" aria-label="انتقل للقسم التالي">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v14m0 0 6-6m-6 6-6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </section>
+
+    <!-- ATMOSPHERE -->
+    <section id="atmosphere" class="section atmosphere fade-section" aria-label="أجواء المنتج">
+      <img class="atmosphere__image" src="s6.png" alt="لقطة بخار ذهبية فاخرة" loading="lazy" width="1080" height="1920">
+      <div class="container atmosphere__content">
+        <h2>مصنوعة للتفاصيل</h2>
+        <span class="gold-line" aria-hidden="true"></span>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section features fade-section" aria-labelledby="features-title">
+      <div class="container">
+        <p class="eyebrow">لماذا مطحنتنا؟</p>
+        <span class="gold-line" aria-hidden="true"></span>
+        <div class="features__grid">
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3v3m0 12v3M3 12h3m12 0h3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1M18.4 5.6l-2.1 2.1m-8.6 8.6-2.1 2.1"/>
+                <circle cx="12" cy="12" r="4"/>
+              </svg>
+            </div>
+            <div>
+              <h3 id="features-title">تحكم كامل في الطحن</h3>
+              <p>اختار درجة الطحن المناسبة للإسبريسو أو القهوة التركي أو الفرنش برس بسهولة.</p>
+            </div>
+          </article>
+
+          <article class="feature-card feature-card--image">
+            <img src="s5.png" alt="الجزء الشفاف في مطحنة القهوة اليدوية" loading="lazy" width="1080" height="1920">
+            <div class="feature-card__body">
+              <div class="feature-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="m12 3 8 7-8 11-8-11 8-7Z"/>
+                  <path d="M4 10h16M9 10l3 11 3-11M8 3l-4 7m12-7 4 7"/>
+                </svg>
+              </div>
+              <h3>قلب سيراميك</h3>
+              <p>لا صدأ ولا تغيير في طعم القهوة، نقاء ثابت في كل فنجان.</p>
+            </div>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3s6 6.2 6 11a6 6 0 0 1-12 0c0-4.8 6-11 6-11Z"/>
+                <path d="M9.6 15.5c.6 1.3 1.6 2 3 2.1"/>
+              </svg>
+            </div>
+            <div>
+              <h3>سهل التنظيف</h3>
+              <p>فكها واغسلها بسهولة كاملة علشان تفضل نظيفة وجاهزة لكل استخدام.</p>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAILS -->
+    <section class="section details fade-section" aria-labelledby="details-title">
+      <img class="details__image" src="s4.png" alt="تفاصيل خامة مطحنة القهوة عن قرب" loading="lazy" width="1080" height="1920">
+      <div class="container">
+        <div class="details__panel">
+          <h2 id="details-title">تفاصيل تفرق</h2>
+          <span class="gold-line" aria-hidden="true"></span>
+          <ul class="spec-list">
+            <li>
+              <strong>المادة</strong>
+              <span>بلاستيك مقاوم وقلب سيراميك</span>
+            </li>
+            <li>
+              <strong>الخزان</strong>
+              <span>شفاف — تشوف كمية الطحن بوضوح</span>
+            </li>
+            <li>
+              <strong>اللون</strong>
+              <span>أسود أنيق للبيت والمكتب</span>
+            </li>
+            <li>
+              <strong>الغسيل</strong>
+              <span>قابلة للغسيل بالمية بالكامل</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICE -->
+    <section class="section price fade-section" aria-labelledby="price-title">
+      <div class="container">
+        <p class="eyebrow">عرض محدود</p>
+        <span class="gold-line" aria-hidden="true"></span>
+        <p class="old-price">1,299 EGP</p>
+        <h2 id="price-title" class="new-price">899 EGP</h2>
+        <div class="badge">وفر 400 جنيه &mdash; خصم 31%</div>
+        <p class="shipping-note">شحن مجاني لكل محافظات مصر، والدفع عند الاستلام بعد تأكيد الطلب.</p>
+        <button class="cta-btn" type="button">اطلب دلوقتي</button>
+      </div>
+    </section>
+
+    <!-- ORDER FORM -->
+    <section id="order-form" class="section order fade-section" aria-labelledby="order-title">
+      <div class="container">
+        <div class="order__intro">
+          <h2 id="order-title">أكمل طلبك دلوقتي</h2>
+          <p>هنتواصل معاك خلال 24 ساعة لتأكيد الطلب وموعد التسليم.</p>
+        </div>
+
+        <div class="order__layout">
+
+          <figure class="product-shot" aria-label="صورة المنتج">
+            <img src="buy-photo.png" alt="مطحنة القهوة اليدوية Tidy EG" loading="lazy" width="768" height="1376">
+          </figure>
+
+          <form class="order-form" action="https://formsubmit.co/tidy.eg.2026@gmail.com" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="🛒 طلب جديد — مطحنة القهوة - Tidy EG">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="تاريخ_ووقت_الطلب" id="order-timestamp" value="">
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
+
+            <!-- FORM PRICE CARD — always visible inside the form -->
+            <div class="form-price" id="form-price-card" aria-label="ملخص السعر">
+              <div class="form-price__row">
+                <span class="form-price__original">1,299 EGP</span>
+                <span class="form-price__current" id="form-price-current">899 EGP</span>
+              </div>
+              <div class="form-price__saving" id="form-price-saving">وفر 400 جنيه</div>
+              <div class="form-price__promo-note" id="form-price-promo-note"></div>
+            </div>
+
+            <div class="form-grid">
+
+              <div class="field field--wide">
+                <label for="full-name">الاسم ثلاثي</label>
+                <input id="full-name" type="text" name="الاسم_الثلاثي" placeholder="مثال: محمد أحمد علي" autocomplete="name" required>
+              </div>
+
+              <div class="field">
+                <label for="phone-primary">رقم التليفون الأول</label>
+                <input id="phone-primary" type="tel" name="رقم_التليفون_الأول" placeholder="01xxxxxxxxx" inputmode="numeric" maxlength="11" autocomplete="tel" required>
+              </div>
+
+              <div class="field">
+                <label for="phone-secondary">رقم التليفون الثاني</label>
+                <input id="phone-secondary" type="tel" name="رقم_التليفون_الثاني" placeholder="01xxxxxxxxx" inputmode="numeric" maxlength="11" required>
+              </div>
+
+              <div class="field field--wide">
+                <label id="governorate-label">المحافظة</label>
+                <div class="custom-dropdown" id="governorate-dropdown" aria-labelledby="governorate-label">
+                  <input type="hidden" name="المحافظة" id="governorate" value="" required>
+                  <button type="button" class="custom-dropdown__toggle" id="governorate-toggle" aria-haspopup="listbox" aria-expanded="false">
+                    <span class="custom-dropdown__placeholder">اختار المحافظة</span>
+                    <svg class="custom-dropdown__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="custom-dropdown__panel" id="governorate-panel" hidden>
+                    <div class="custom-dropdown__search-wrap">
+                      <input type="text" class="custom-dropdown__search" id="governorate-search" placeholder="ابحث عن المحافظة..." autocomplete="off" aria-label="ابحث عن المحافظة">
+                    </div>
+                    <ul class="custom-dropdown__list" id="governorate-list" role="listbox" aria-label="المحافظات">
+                      <li class="custom-dropdown__option" role="option" data-value="القاهرة">القاهرة</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الجيزة">الجيزة</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الإسكندرية">الإسكندرية</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الدقهلية">الدقهلية</li>
+                      <li class="custom-dropdown__option" role="option" data-value="البحيرة">البحيرة</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الفيوم">الفيوم</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الغربية">الغربية</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الإسماعيلية">الإسماعيلية</li>
+                      <li class="custom-dropdown__option" role="option" data-value="المنوفية">المنوفية</li>
+                      <li class="custom-dropdown__option" role="option" data-value="المنيا">المنيا</li>
+                      <li class="custom-dropdown__option" role="option" data-value="القليوبية">القليوبية</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الوادي الجديد">الوادي الجديد</li>
+                      <li class="custom-dropdown__option" role="option" data-value="السويس">السويس</li>
+                      <li class="custom-dropdown__option" role="option" data-value="أسوان">أسوان</li>
+                      <li class="custom-dropdown__option" role="option" data-value="أسيوط">أسيوط</li>
+                      <li class="custom-dropdown__option" role="option" data-value="بني سويف">بني سويف</li>
+                      <li class="custom-dropdown__option" role="option" data-value="بورسعيد">بورسعيد</li>
+                      <li class="custom-dropdown__option" role="option" data-value="دمياط">دمياط</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الشرقية">الشرقية</li>
+                      <li class="custom-dropdown__option" role="option" data-value="جنوب سيناء">جنوب سيناء</li>
+                      <li class="custom-dropdown__option" role="option" data-value="كفر الشيخ">كفر الشيخ</li>
+                      <li class="custom-dropdown__option" role="option" data-value="مطروح">مطروح</li>
+                      <li class="custom-dropdown__option" role="option" data-value="الأقصر">الأقصر</li>
+                      <li class="custom-dropdown__option" role="option" data-value="قنا">قنا</li>
+                      <li class="custom-dropdown__option" role="option" data-value="شمال سيناء">شمال سيناء</li>
+                      <li class="custom-dropdown__option" role="option" data-value="سوهاج">سوهاج</li>
+                      <li class="custom-dropdown__option" role="option" data-value="البحر الأحمر">البحر الأحمر</li>
+                    </ul>
+                    <p class="custom-dropdown__no-results" id="governorate-no-results" hidden>لا توجد نتائج</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field field--wide">
+                <label for="address">العنوان بالتفصيل</label>
+                <textarea id="address" name="العنوان_بالتفصيل" rows="3" placeholder="اكتب العنوان بالتفصيل: الشارع، العمارة، الدور، الشقة" required></textarea>
+              </div>
+
+              <div class="field field--wide">
+                <label for="landmark">علامة مميزة للمنزل أو المكان</label>
+                <input id="landmark" type="text" name="علامة_مميزة" placeholder="مثال: بجانب المسجد، عمارة الواحة" required>
+              </div>
+
+              <div class="field field--wide">
+                <label for="promocode">كود الخصم (اختياري)</label>
+                <input id="promocode" type="text" name="كود_الخصم" placeholder="ادخل كود الخصم" autocomplete="off">
+                <p class="promo-feedback" id="promo-feedback" role="status" aria-live="polite"></p>
+              </div>
+
+            </div>
+
+            <p class="form-error" id="form-error" role="alert"></p>
+            <button class="submit-btn" type="submit">تأكيد الطلب</button>
+            <div class="success-message" id="success-message" role="status">
+              🎉 شكراً! تم استلام طلبك بنجاح.<br>سنتواصل معك على الرقم المسجل خلال 24 ساعة لتأكيد الطلب وموعد التسليم.
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- CLOSING -->
+    <section class="section closing fade-section" aria-label="ابدأ صبحك صح">
+      <img class="closing__image" src="s10.png" alt="لقطة ختامية فاخرة للقهوة والمطحنة" loading="lazy" width="1080" height="1920">
+      <div class="container">
+        <h2>ابدأ صبحك بطحنة مظبوطة</h2>
+        <span class="gold-line" aria-hidden="true"></span>
+        <button class="cta-btn" type="button">اطلب دلوقتي</button>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__brand">Tidy EG</p>
+      <p>الشحن متاح لكل محافظات جمهورية مصر العربية</p>
+      <p>للاستفسار تواصل معنا وسنرد عليك في أقرب وقت.</p>
+      <p>© 2026 Tidy EG — جميع الحقوق محفوظة</p>
+    </div>
+  </footer>
+
+  <script>
+    /* ---- PROMO POPUP ---- */
+    (function () {
+      const overlay = document.getElementById("promo-overlay");
+      const closeBtn = document.getElementById("promo-close");
+      const modal = overlay?.querySelector(".promo-modal");
+      if (!overlay) return;
+
+      // Check sessionStorage — if already closed this session, hide permanently
+      if (sessionStorage.getItem("promo-closed") === "true") {
+        overlay.setAttribute("hidden", "");
+        return;
+      }
+
+      let previousFocus = null;
+
+      function openPopup() {
+        previousFocus = document.activeElement;
+        overlay.removeAttribute("hidden");
+        document.body.style.overflow = "hidden";
+        closeBtn.focus();
+      }
+
+      function closePopup() {
+        overlay.setAttribute("hidden", "");
+        document.body.style.overflow = "";
+        sessionStorage.setItem("promo-closed", "true");
+        if (previousFocus && typeof previousFocus.focus === "function") {
+          previousFocus.focus();
+        }
+      }
+
+      // Open on load with slight delay for smoother UX
+      setTimeout(openPopup, 600);
+
+      // Close: X button
+      closeBtn.addEventListener("click", closePopup);
+
+      // Close: click outside modal
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) closePopup();
+      });
+
+      // Close: Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !overlay.hasAttribute("hidden")) {
+          closePopup();
+        }
+      });
+
+      // Trap focus inside modal
+      overlay.addEventListener("keydown", (e) => {
+        if (e.key !== "Tab" || overlay.hasAttribute("hidden")) return;
+        const focusable = overlay.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      });
+    })();
+
+    /* ---- REFS ---- */
+    const orderSection   = document.querySelector("#order-form");
+    const form           = document.querySelector(".order-form");
+    const errorBox       = document.querySelector("#form-error");
+    const successMessage = document.querySelector("#success-message");
+    const timestampField = document.querySelector("#order-timestamp");
+    const promoInput    = document.querySelector("#promocode");
+    const promoFeedback = document.querySelector("#promo-feedback");
+    let promoIsValid = false;  // true only when COFFEE100 is entered AND not expired
+
+    /* ---- CTA SCROLL ---- */
+    document.querySelectorAll(".cta-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        orderSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    /* ---- SCROLL REVEAL ---- */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        el.classList.add("visible");
+
+        /* stagger feature cards */
+        el.querySelectorAll(".feature-card").forEach((card, i) => {
+          card.style.opacity          = "0";
+          card.style.transform        = "translateY(28px)";
+          card.style.transition       = `opacity 0.65s ease ${i * 0.14}s, transform 0.65s ease ${i * 0.14}s, border-color 0.3s ease, box-shadow 0.3s ease`;
+          requestAnimationFrame(() => {
+            card.style.opacity   = "1";
+            card.style.transform = "translateY(0)";
+          });
+        });
+
+        observer.unobserve(el);
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll(".fade-section").forEach((s) => observer.observe(s));
+
+    /* ---- PARALLAX (atmosphere + closing) ---- */
+    const atmosphereImg = document.querySelector(".atmosphere__image");
+    const closingImg    = document.querySelector(".closing__image");
+    const closingEl     = document.querySelector(".closing");
+
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      if (atmosphereImg) {
+        atmosphereImg.style.transform = `scale(1.05) translateY(${y * 0.035}px)`;
+      }
+      if (closingImg && closingEl) {
+        const top = closingEl.getBoundingClientRect().top + y;
+        closingImg.style.transform = `scale(1.05) translateY(${(y - top) * 0.035}px)`;
+      }
+    }, { passive: true });
+
+    /* ---- FORM HELPERS ---- */
+    function normalizeDigits(v) { return v.replace(/[^\d]/g, ""); }
+
+    function showError(msg) {
+      errorBox.textContent = msg;
+      errorBox.style.display = "block";
+      successMessage.style.display = "none";
+      errorBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function clearError() {
+      errorBox.textContent = "";
+      errorBox.style.display = "none";
+    }
+
+    /* ---- DYNAMIC FORM PRICE UPDATER ---- */
+    function updateFormPrice(state) {
+      const currentEl = document.getElementById("form-price-current");
+      const savingEl  = document.getElementById("form-price-saving");
+      const noteEl    = document.getElementById("form-price-promo-note");
+      const cardEl    = document.getElementById("form-price-card");
+      if (!currentEl || !savingEl || !noteEl || !cardEl) return;
+
+      currentEl.classList.remove("promo-active");
+      cardEl.classList.remove("promo-active-bg");
+      noteEl.textContent = "";
+
+      if (state === "valid") {
+        currentEl.textContent = "799 EGP";
+        currentEl.classList.add("promo-active");
+        cardEl.classList.add("promo-active-bg");
+        savingEl.textContent = "وفر 500 جنيه";
+        noteEl.textContent = "✨ تم تطبيق كود COFFEE100 — خصم 100 جنيه إضافي";
+      } else {
+        currentEl.textContent = "899 EGP";
+        savingEl.textContent = "وفر 400 جنيه";
+        if (state === "expired") {
+          noteEl.textContent = "⏰ الكود منتهي الصلاحية — السعر بدون الخصم الإضافي";
+        }
+      }
+    }
+
+    /* ---- PROMOCODE VALIDATION ---- */
+    promoInput.addEventListener("input", () => {
+      const code = promoInput.value.trim();
+      promoFeedback.className = "promo-feedback";
+      promoIsValid = false;
+
+      if (!code) {
+        promoFeedback.textContent = "";
+        updateFormPrice(null);
+        return;
+      }
+
+      const now = Date.now();
+      const expiry = new Date("2026-05-31T22:00:00Z").getTime();
+
+      const normalized = code.toUpperCase().replace(/\s+/g, "");
+      if (normalized === "COFFEE100") {
+        if (now >= expiry) {
+          promoFeedback.classList.add("error");
+          promoFeedback.textContent = "⏰ الكود منتهي الصلاحية";
+          updateFormPrice("expired");
+        } else {
+          promoFeedback.classList.add("success");
+          promoFeedback.textContent = "✅ الكود صحيح! السعر النهائي 799 جنيه";
+          promoIsValid = true;
+          updateFormPrice("valid");
+        }
+      } else if (code.length >= 3) {
+        promoFeedback.classList.add("error");
+        promoFeedback.textContent = "⚠️ الكود غير صحيح";
+        updateFormPrice("invalid");
+      }
+    });
+
+    /* ---- FORM SUBMIT ---- */
+    form.addEventListener("submit", (e) => {
+      const fullName       = document.querySelector("#full-name").value.trim();
+      const phoneA         = document.querySelector("#phone-primary");
+      const phoneB         = document.querySelector("#phone-secondary");
+      const gov            = document.querySelector("#governorate").value;
+      const address        = document.querySelector("#address").value.trim();
+      const landmark       = document.querySelector("#landmark").value.trim();
+      const p1             = normalizeDigits(phoneA.value);
+      const p2             = normalizeDigits(phoneB.value);
+      const pattern        = /^01\d{9}$/;
+
+      clearError();
+
+      if (fullName.split(/\s+/).filter(Boolean).length < 3) {
+        e.preventDefault();
+        return showError("من فضلك اكتب اسمك الثلاثي كاملاً.");
+      }
+      if (!pattern.test(p1)) {
+        e.preventDefault();
+        return showError("رقم التليفون الأول لازم يكون 11 رقم ويبدأ بـ 01.");
+      }
+      if (!pattern.test(p2)) {
+        e.preventDefault();
+        return showError("رقم التليفون الثاني لازم يكون 11 رقم ويبدأ بـ 01.");
+      }
+      if (!gov || !address || !landmark) {
+        e.preventDefault();
+        return showError("من فضلك أكمل المحافظة والعنوان والعلامة المميزة.");
+      }
+
+      /* ---- BLOCK SUBMISSION IF PROMOCODE IS NON-EMPTY & INVALID ---- */
+      const promoRaw = promoInput.value.trim();
+      if (promoRaw && !promoIsValid) {
+        e.preventDefault();
+        const utcNow = Date.now();
+        const promoExpiry = new Date("2026-05-31T22:00:00Z").getTime();
+        const normalized = promoRaw.toUpperCase().replace(/\s+/g, "");
+        if (normalized === "COFFEE100" && utcNow >= promoExpiry) {
+          return showError("عذراً، كود الخصم COFFEE100 منتهي الصلاحية. الرجاء مسح الكود لإكمال الطلب.");
+        }
+        return showError("كود الخصم الذي أدخلته غير صحيح. الرجاء تصحيحه أو مسحه لإكمال الطلب.");
+      }
+
+      // Add promo info if valid code is active
+      promoInput.removeAttribute("name");
+      if (promoIsValid) {
+        let promoHidden = form.querySelector('input[name="نوع_الخصم"]');
+        if (!promoHidden) {
+          promoHidden = document.createElement("input");
+          promoHidden.type = "hidden";
+          promoHidden.name = "نوع_الخصم";
+          form.appendChild(promoHidden);
+        }
+        promoHidden.value = "COFFEE100 - خصم 100 جنيه إضافي - السعر النهائي 799 جنيه";
+      } else {
+        // Clean up stale hidden field when promo is not valid
+        const existing = form.querySelector('input[name="نوع_الخصم"]');
+        if (existing) existing.remove();
+      }
+      promoInput.setAttribute("name", "كود_الخصم");
+
+      phoneA.value = p1;
+      phoneB.value = p2;
+      timestampField.value = new Date().toLocaleString("ar-EG", {
+        timeZone: "Africa/Cairo",
+        dateStyle: "medium",
+        timeStyle: "short"
+      });
+      successMessage.style.display = "block";
+    });
+
+    /* ---- CUSTOM GOVERNORATE DROPDOWN ---- */
+    (function () {
+      const dropdown    = document.getElementById("governorate-dropdown");
+      if (!dropdown) return;
+
+      const toggle      = document.getElementById("governorate-toggle");
+      const panel       = document.getElementById("governorate-panel");
+      const searchInput = document.getElementById("governorate-search");
+      const list        = document.getElementById("governorate-list");
+      const hiddenInput = document.getElementById("governorate");
+      const placeholder = toggle.querySelector(".custom-dropdown__placeholder");
+      const noResults   = document.getElementById("governorate-no-results");
+      let activeIndex   = -1;
+
+      const getVisible = () => Array.from(list.querySelectorAll(".custom-dropdown__option:not([hidden])"));
+
+      function open() {
+        dropdown.classList.add("open");
+        panel.hidden = false;
+        toggle.setAttribute("aria-expanded", "true");
+        activeIndex = -1;
+        searchInput.value = "";
+        filter("");
+        setTimeout(() => searchInput.focus(), 50);
+      }
+
+      function close() {
+        dropdown.classList.remove("open");
+        panel.hidden = true;
+        toggle.setAttribute("aria-expanded", "false");
+        activeIndex = -1;
+        toggle.focus();
+      }
+
+      function select(opt) {
+        const val = opt.dataset.value;
+        hiddenInput.value = val;
+        placeholder.textContent = val;
+        toggle.setAttribute("data-selected", "");
+        list.querySelectorAll(".custom-dropdown__option").forEach((o) => o.removeAttribute("data-selected"));
+        opt.setAttribute("data-selected", "");
+        close();
+      }
+
+      function filter(q) {
+        const qn = q.trim().toLowerCase();
+        let count = 0;
+        list.querySelectorAll(".custom-dropdown__option").forEach((o) => {
+          const match = !qn || o.textContent.toLowerCase().includes(qn);
+          o.toggleAttribute("hidden", !match);
+          if (match) count++;
+        });
+        noResults.hidden = count > 0;
+        activeIndex = -1;
+      }
+
+      function setActive(i) {
+        const vis = getVisible();
+        if (!vis.length) return;
+        const prev = list.querySelector(".custom-dropdown__option[data-active]");
+        if (prev) prev.removeAttribute("data-active");
+        if (i < 0) i = vis.length - 1;
+        if (i >= vis.length) i = 0;
+        activeIndex = i;
+        vis[i].setAttribute("data-active", "");
+        vis[i].scrollIntoView({ block: "nearest" });
+      }
+
+      toggle.addEventListener("click", () => dropdown.classList.contains("open") ? close() : open());
+      searchInput.addEventListener("input", (e) => filter(e.target.value));
+      list.addEventListener("click", (e) => {
+        const opt = e.target.closest(".custom-dropdown__option");
+        if (opt && !opt.hasAttribute("hidden")) select(opt);
+      });
+      document.addEventListener("click", (e) => {
+        if (dropdown.classList.contains("open") && !dropdown.contains(e.target)) close();
+      });
+
+      function handleKeys(e, fromSearch) {
+        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+          e.preventDefault();
+          if (!dropdown.classList.contains("open")) { open(); return; }
+          const vis = getVisible();
+          if (!vis.length) return;
+          setActive(activeIndex < 0
+            ? (e.key === "ArrowDown" ? 0 : vis.length - 1)
+            : activeIndex + (e.key === "ArrowDown" ? 1 : -1));
+        }
+        if (e.key === "Escape" && dropdown.classList.contains("open")) { e.preventDefault(); close(); }
+        if (e.key === "Enter" && dropdown.classList.contains("open")) {
+          const act = list.querySelector(".custom-dropdown__option[data-active]");
+          if (act) { e.preventDefault(); select(act); }
+        }
+      }
+
+      toggle.addEventListener("keydown", (e) => handleKeys(e, false));
+      searchInput.addEventListener("keydown", (e) => handleKeys(e, true));
+    })();
+  </script>
+</body>
+</html>
